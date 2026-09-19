@@ -3,123 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>모세공동체 랜덤 질문 뽑기</title>
+    <title>모세공동체 나눔 질문 뽑기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-        }
-
         body {
-            background-color: #f4f6f9;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Pretendard', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: #ffffff;
-            padding: 40px 24px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* Card pop animation */
+        .card-pop {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-
-        h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 8px;
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
-
-        .subtitle {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 40px;
-        }
-
-        .card-container {
-            width: 100%;
-            min-height: 180px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #edf2f7 100%);
-            border: 2px dashed #cbd5e1;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 20px;
-            margin-bottom: 40px;
-            transition: all 0.3s ease;
-        }
-
-        .question-text {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2d3748;
-            line-height: 1.6;
-            word-break: keep-all;
-            opacity: 1;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-
-        .question-text.fade-out {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        .question-text.fade-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* 빨간색 동그란 푸시 버튼 스타일 */
+        /* 3D Red Push Button Styles */
         .push-btn {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle at 30% 30%, #ff5252, #d32f2f);
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ff5252 0%, #d32f2f 60%, #9a0007 100%);
+            box-shadow: 
+                0 12px 25px rgba(211, 47, 47, 0.4),
+                inset 0 4px 8px rgba(255, 255, 255, 0.4),
+                inset 0 -6px 8px rgba(0, 0, 0, 0.4);
             border: none;
-            color: white;
-            font-size: 15px;
-            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 8px 0 #9a0007, 0 12px 20px rgba(211, 47, 47, 0.4);
-            transition: all 0.1s ease;
-            outline: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.08s ease-in-out;
+            outline: none;
             user-select: none;
         }
-
+        .push-btn:hover {
+            background: radial-gradient(circle at 35% 35%, #ff6b6b 0%, #e53e3e 60%, #b91c1c 100%);
+            box-shadow: 
+                0 15px 30px rgba(211, 47, 47, 0.5),
+                inset 0 4px 10px rgba(255, 255, 255, 0.5),
+                inset 0 -6px 10px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
         .push-btn:active {
             transform: translateY(6px);
-            box-shadow: 0 2px 0 #9a0007, 0 4px 10px rgba(211, 47, 47, 0.3);
+            box-shadow: 
+                0 4px 10px rgba(211, 47, 47, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+            background: radial-gradient(circle at 50% 50%, #d32f2f 0%, #b91c1c 70%, #7f1d1d 100%);
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8 text-slate-800">
 
-    <div class="container">
-        <h1>모세공동체 나눔 질문</h1>
-        <p class="subtitle">버튼을 눌러 오늘의 질문을 뽑아보세요</p>
+    <header class="text-center mt-4 mb-2">
+        <span class="inline-block bg-indigo-100 text-indigo-700 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2 shadow-sm">
+            모세공동체 &middot; 만청 소그룹
+        </span>
+        <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900">
+            나눔 질문 뽑기
+        </h1>
+        <p class="text-xs md:text-sm text-slate-600 mt-1">
+            아래 버튼을 눌러 오늘의 생각을 함께 나눠보세요
+        </p>
+    </header>
 
-        <div class="card-container">
-            <div id="questionBox" class="question-text">버튼을 눌러 질문을 확인하세요!</div>
+    <main class="w-full max-w-md mx-auto my-auto flex flex-col items-center">
+        <div id="questionCard" class="w-full bg-white rounded-3xl p-8 md:p-10 shadow-xl border border-slate-100 text-center relative min-h-[220px] flex flex-col justify-center items-center transition-all duration-300">
+            
+            <!-- Index Badge -->
+            <div id="questionIndex" class="absolute top-4 left-6 text-xs font-semibold text-indigo-500 bg-indigo-50 px-2.5 py-1 rounded-md hidden">
+                Q. 0
+            </div>
+
+            <!-- Question Text -->
+            <div id="questionContainer" class="my-2">
+                <p class="text-slate-400 text-base md:text-lg font-medium">
+                    버튼을 눌러 질문을 뽑아주세요!
+                </p>
+            </div>
         </div>
 
-        <button class="push-btn" onclick="pickQuestion()">질문뽑기</button>
-    </div>
+        <div class="mt-8 flex justify-center">
+            <button onclick="drawRandomQuestion()" class="push-btn" aria-label="질문뽑기">
+                질문뽑기
+            </button>
+        </div>
+    </main>
+
+    <footer class="mt-6 text-center text-slate-500 text-xs">
+        <p>&copy; 모세공동체 나눔 웹 애플리케이션</p>
+    </footer>
 
     <script>
         const questions = [
@@ -135,28 +115,35 @@
 
         let lastIndex = -1;
 
-        function pickQuestion() {
-            const box = document.getElementById('questionBox');
-            
-            // 페이드아웃 효과
-            box.classList.add('fade-out');
+        function drawRandomQuestion() {
+            const card = document.getElementById('questionCard');
+            const container = document.getElementById('questionContainer');
+            const indexBadge = document.getElementById('questionIndex');
 
-            setTimeout(() => {
-                // 중복해서 연속으로 같은 질문이 나오지 않도록 처리
-                let randomIndex;
-                do {
-                    randomIndex = Math.floor(Math.random() * questions.length);
-                } while (randomIndex === lastIndex && questions.length > 1);
+            // Select random question avoiding immediate repetition
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * questions.length);
+            } while (randomIndex === lastIndex && questions.length > 1);
 
-                lastIndex = randomIndex;
-                box.textContent = questions[randomIndex];
+            lastIndex = randomIndex;
+            const selectedQuestion = questions[randomIndex];
 
-                // 페이드인 효과
-                box.classList.remove('fade-out');
-                box.classList.add('fade-in');
-            }, 200);
+            // Re-trigger animation
+            card.classList.remove('card-pop');
+            void card.offsetWidth; 
+            card.classList.add('card-pop');
+
+            // Update DOM
+            indexBadge.classList.remove('hidden');
+            indexBadge.textContent = `Q. ${randomIndex + 1}`;
+
+            container.innerHTML = `
+                <p class="text-lg md:text-xl font-bold text-slate-800 leading-snug">
+                    "${selectedQuestion}"
+                </p>
+            `;
         }
     </script>
-
 </body>
 </html>
