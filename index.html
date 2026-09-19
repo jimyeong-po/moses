@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모세공동체 랜덤 질문 뽑기</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            padding: 40px 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .card-container {
+            width: 100%;
+            min-height: 180px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #edf2f7 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            line-height: 1.6;
+            word-break: keep-all;
+            opacity: 1;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .question-text.fade-out {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .question-text.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 빨간색 동그란 푸시 버튼 스타일 */
+        .push-btn {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #ff5252, #d32f2f);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #9a0007, 0 12px 20px rgba(211, 47, 47, 0.4);
+            transition: all 0.1s ease;
+            outline: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .push-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #9a0007, 0 4px 10px rgba(211, 47, 47, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>모세공동체 나눔 질문</h1>
+        <p class="subtitle">버튼을 눌러 오늘의 질문을 뽑아보세요</p>
+
+        <div class="card-container">
+            <div id="questionBox" class="question-text">버튼을 눌러 질문을 확인하세요!</div>
+        </div>
+
+        <button class="push-btn" onclick="pickQuestion()">질문뽑기</button>
+    </div>
+
+    <script>
+        const questions = [
+            "내가 생각하는 모세공동체는 어떤 공동체인가?",
+            "내가 생각하는 인우목사님은 어떤 사람인가?",
+            "지금 모세에 가장 필요한 것은 무엇인가?",
+            "우리 공동체에서 나의 역할은 무엇인가?",
+            "리더들과 해보고 싶은게 있다면?",
+            "모세는, 만청은 지금 살아 있는 공동체인가 유지되는 공동체인가",
+            "내가 생각하는 모세 공동체 리더의 모습은?",
+            "내가 꿈꾸는 공동체, 교회는 어떤 교회인가?"
+        ];
+
+        let lastIndex = -1;
+
+        function pickQuestion() {
+            const box = document.getElementById('questionBox');
+            
+            // 페이드아웃 효과
+            box.classList.add('fade-out');
+
+            setTimeout(() => {
+                // 중복해서 연속으로 같은 질문이 나오지 않도록 처리
+                let randomIndex;
+                do {
+                    randomIndex = Math.floor(Math.random() * questions.length);
+                } while (randomIndex === lastIndex && questions.length > 1);
+
+                lastIndex = randomIndex;
+                box.textContent = questions[randomIndex];
+
+                // 페이드인 효과
+                box.classList.remove('fade-out');
+                box.classList.add('fade-in');
+            }, 200);
+        }
+    </script>
+
+</body>
+</html>
